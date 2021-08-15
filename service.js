@@ -10,31 +10,33 @@ class Api {
         this.dirs = this.dirs.concat(structuredStr);
     }
     static RemoveDir(id) {
-        const startIndex = this.dirs.lastIndexOf('ParentId', this.dirs.indexOf(`Id:${id}`));
+        const aa = this.dirs.indexOf(`id:${id}`);
+        const startIndex = this.dirs.lastIndexOf('parentId', this.dirs.indexOf(`id:${id}`));
         const endIndex = this.dirs.indexOf('|', startIndex);
         this.dirs = this.dirs.replace(this.dirs.substring(startIndex, endIndex + 1), "");
+        this.RemoveSubFiles(id);
         this.RemoveSubDirs(id);
     }
     static RemoveFile(id) {
-        const startIndex = this.files.lastIndexOf('ParentId', this.files.indexOf(`Id:${id}`));
+        const startIndex = this.files.lastIndexOf('parentId', this.files.indexOf(`id:${id}`));
         const endIndex = this.files.indexOf('|', startIndex);
         this.files = this.files.replace(this.files.substring(startIndex, endIndex + 1), "");
     }
     static MoveFile(id, parentId) {
-        const startIndex = this.files.lastIndexOf('ParentId', this.files.indexOf(`Id:${id}`));
+        const startIndex = this.files.lastIndexOf('parentId', this.files.indexOf(`id:${id}`));
         const endIndex = this.files.indexOf('|', startIndex);
         let file = this.files.slice(startIndex, endIndex + 1);
-        file = file.replace(new RegExp(/[^,]*/), `ParentId:${parentId}`);
+        file = file.replace(new RegExp(/[^,]*/), `parentId:${parentId}`);
         this.files = this.files.concat(file);
         this.files = this.files.replace(this.files.substring(startIndex, endIndex), "");
         if (this.files.charAt(0) == '|')
             this.files = this.files.replace('|', "");
     }
     static MoveDir(id, parentId) {
-        const startIndex = this.dirs.lastIndexOf('ParentId', this.dirs.indexOf(`Id:${id}`));
+        const startIndex = this.dirs.lastIndexOf('parentId', this.dirs.indexOf(`id:${id}`));
         const endIndex = this.dirs.indexOf('|', startIndex);
         let dir = this.dirs.slice(startIndex, endIndex + 1);
-        dir = dir.replace(new RegExp(/[^,]*/), `ParentId:${parentId}`);
+        dir = dir.replace(new RegExp(/[^,]*/), `parentId:${parentId}`);
         this.dirs = this.dirs.concat(dir);
         this.dirs = this.dirs.replace(this.dirs.substring(startIndex, endIndex), "");
         if (this.files.charAt(0) == '|')
@@ -49,17 +51,25 @@ class Api {
         console.log('\n Directories: \n', this.dirs.replace('||', '|').replace(new RegExp('[|]', 'g'), '\n'));
         console.log('Files: \n', this.files.replace('||', '|').replace(new RegExp('[|]', 'g'), '\n'));
     }
+    static RemoveSubFiles(id) {
+        while (this.files.indexOf(`parentId:${id}`) != -1) {
+            const startIndex = this.files.indexOf(`parentId:${id}`);
+            const endIndex = this.files.indexOf(`|`, startIndex);
+            this.files = this.files.replace(this.files.substring(startIndex, endIndex), "");
+        }
+    }
     static RemoveSubDirs(id) {
-        while (this.dirs.indexOf(`ParentId:${id}`) != -1) {
-            const startIndex = this.dirs.indexOf(`ParentId:${id}`);
+        while (this.dirs.indexOf(`parentId:${id}`) != -1) {
+            const startIndex = this.dirs.indexOf(`parentId:${id}`);
             const endIndex = this.dirs.indexOf(`|`, startIndex);
             this.dirs = this.dirs.replace(this.dirs.substring(startIndex, endIndex), "");
+            this.RemoveSubFiles(id);
         }
     }
     static GenerateStracturedString(obj, parentId) {
-        let res = parentId ? `ParentId:${parentId},` : `ParentId:N/A,`;
+        let res = parentId ? `parentId:${parentId},` : `parentId:N/A,`;
         if (parentId)
-            res = `ParentId:${parentId},`;
+            res = `parentId:${parentId},`;
         Object.keys(obj).forEach(key => {
             res += `${key}:${obj[key]},`;
         });

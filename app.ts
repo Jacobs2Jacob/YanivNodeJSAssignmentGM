@@ -10,6 +10,7 @@ class App {
         Api.AddDir(12, 'dir3', DirectoryColor.Blue);
         Api.AddDir(13, 'dir4', DirectoryColor.Red, 10);
 
+        Api.AddFile(148, 'file0', FileColor.White, 11);
         Api.RemoveDir(11);
 
         Api.AddDir(133, 'dir5', DirectoryColor.Green);
