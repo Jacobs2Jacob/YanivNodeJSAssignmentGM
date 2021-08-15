@@ -18,6 +18,7 @@ export class Api
         const startIndex = this.dirs.lastIndexOf('ParentId', this.dirs.indexOf(`Id:${id}`));
         const endIndex = this.dirs.indexOf('|', startIndex);
         this.dirs = this.dirs.replace(this.dirs.substring(startIndex, endIndex + 1), "");
+        this.RemoveSubFiles(id);
         this.RemoveSubDirs(id);
     }
 
@@ -65,12 +66,21 @@ export class Api
         console.log('Files: \n', this.files.replace('||', '|').replace(new RegExp('[|]', 'g'), '\n'));
     }
 
-    private static RemoveSubDirs(id: number): void
+    private static RemoveSubFiles(id: number): void
     {
+        while (this.files.indexOf(`ParentId:${id}`) != -1) {
+            const startIndex = this.files.indexOf(`ParentId:${id}`);
+            const endIndex = this.files.indexOf(`|`, startIndex);
+            this.files = this.files.replace(this.files.substring(startIndex, endIndex), "");
+        }
+    }
+
+    private static RemoveSubDirs(id: number): void {
         while (this.dirs.indexOf(`ParentId:${id}`) != -1) {
             const startIndex = this.dirs.indexOf(`ParentId:${id}`);
             const endIndex = this.dirs.indexOf(`|`, startIndex);
             this.dirs = this.dirs.replace(this.dirs.substring(startIndex, endIndex), "");
+            this.RemoveSubFiles(id);
         }
     }
 
