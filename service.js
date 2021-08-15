@@ -43,9 +43,11 @@ class Api {
             this.files = this.files.replace('|', "");
     }
     static AddFile(id, name, color, parentId) {
-        const file = new File_1.File(id, name, color);
-        const structuredStr = this.GenerateStracturedString(file, parentId);
-        this.files = this.files.concat(structuredStr);
+        if (this.dirs.includes(`id:${parentId}`)) {
+            const file = new File_1.File(id, name, color);
+            const structuredStr = this.GenerateStracturedString(file, parentId);
+            this.files = this.files.concat(structuredStr);
+        }
     }
     static Print() {
         console.log('\n Directories: \n', this.dirs.replace('||', '|').replace(new RegExp('[|]', 'g'), '\n'));
@@ -62,12 +64,14 @@ class Api {
         while (this.dirs.indexOf(`parentId:${id}`) != -1) {
             const startIndex = this.dirs.indexOf(`parentId:${id}`);
             const endIndex = this.dirs.indexOf(`|`, startIndex);
-            this.dirs = this.dirs.replace(this.dirs.substring(startIndex, endIndex), "");
-            this.RemoveSubFiles(id);
+            const dir = this.dirs.substring(startIndex, endIndex);
+            this.dirs = this.dirs.replace(dir, "");
+            const subDirID = parseInt(dir.substring(dir.lastIndexOf('id:') + 3, dir.indexOf(',', dir.lastIndexOf('id:'))));
+            this.RemoveSubFiles(subDirID);
         }
     }
     static GenerateStracturedString(obj, parentId) {
-        let res = parentId ? `parentId:${parentId},` : `parentId:N/A,`;
+        let res = parentId ? `parentId:${parentId},` : `parentId:null,`;
         if (parentId)
             res = `parentId:${parentId},`;
         Object.keys(obj).forEach(key => {

@@ -9,11 +9,12 @@ class App {
         service_1.Api.AddDir(11, 'dir2', Directory_1.DirectoryColor.Red);
         service_1.Api.AddDir(12, 'dir3', Directory_1.DirectoryColor.Blue);
         service_1.Api.AddDir(13, 'dir4', Directory_1.DirectoryColor.Red, 10);
-        service_1.Api.AddFile(148, 'file0', File_1.FileColor.White, 11);
-        service_1.Api.RemoveDir(11);
-        service_1.Api.AddDir(133, 'dir5', Directory_1.DirectoryColor.Green);
         service_1.Api.AddFile(144, 'file1', File_1.FileColor.White, 13);
         service_1.Api.MoveFile(144, 10);
+        service_1.Api.AddFile(148, 'file0', File_1.FileColor.White, 13);
+        service_1.Api.AddFile(121, 'file01', File_1.FileColor.White, 10);
+        service_1.Api.RemoveDir(10);
+        service_1.Api.AddDir(133, 'dir5', Directory_1.DirectoryColor.Green);
         service_1.Api.AddFile(143, 'file2', File_1.FileColor.Blue, 12);
         service_1.Api.AddFile(145, 'file3', File_1.FileColor.White, 12);
         service_1.Api.RemoveFile(145);

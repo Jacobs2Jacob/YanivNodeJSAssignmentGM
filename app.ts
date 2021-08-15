@@ -10,12 +10,13 @@ class App {
         Api.AddDir(12, 'dir3', DirectoryColor.Blue);
         Api.AddDir(13, 'dir4', DirectoryColor.Red, 10);
 
-        Api.AddFile(148, 'file0', FileColor.White, 11);
-        Api.RemoveDir(11);
-
-        Api.AddDir(133, 'dir5', DirectoryColor.Green);
         Api.AddFile(144, 'file1', FileColor.White, 13);
         Api.MoveFile(144, 10);
+        Api.AddFile(148, 'file0', FileColor.White, 13);
+        Api.AddFile(121, 'file01', FileColor.White, 10);
+        Api.RemoveDir(10);
+
+        Api.AddDir(133, 'dir5', DirectoryColor.Green);
         Api.AddFile(143, 'file2', FileColor.Blue, 12);
         Api.AddFile(145, 'file3', FileColor.White, 12);
         Api.RemoveFile(145);
